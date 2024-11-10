@@ -40,3 +40,6 @@ build/
 
 ### Maven ###
 src/main/resources/videos/*
+
+### Vidéos ###
+output/
