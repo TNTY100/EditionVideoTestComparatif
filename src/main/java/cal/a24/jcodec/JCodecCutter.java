@@ -10,11 +10,10 @@ import org.jcodec.common.model.Rational;
 import org.jcodec.scale.Transform;
 import org.jcodec.scale.Yuv420pToRgb;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class VideoSplitter {
+public class JCodecCutter {
 
     public static void splitVideoInHalf(File source, File output1, File output2) throws IOException, JCodecException {
         Transform transform = new Yuv420pToRgb();
