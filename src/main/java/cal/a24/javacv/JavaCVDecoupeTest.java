@@ -16,13 +16,7 @@ public class JavaCVDecoupeTest {
 
         // https://medium.com/@fajrimoad/efficient-video-splitting-with-ffmpeg-and-javacv-b19692db438d
 
-        long duree = 300; // Temps en image de la découpe
-
-
-        File file = new File("./src/main/resources/videos/48SecondesAvecSon.mp4");
-        System.out.println(file.exists());
-        try (FFmpegFrameGrabber grabber = new FFmpegFrameGrabber("./src/main/resources/videos/48SecondesAvecSon.mp4");
-             FFmpegFrameRecorder recorder = new FFmpegFrameRecorder("output/javaCVDecoupe.mp4", grabber.getImageWidth(), grabber.getImageHeight())
+        try (FFmpegFrameGrabber grabber = new FFmpegFrameGrabber("./src/main/resources/videos/48SecondesAvecSon.mp4")
         ) {
             grabber.start();
             System.out.println(grabber.getImageWidth());
@@ -30,37 +24,39 @@ public class JavaCVDecoupeTest {
             long totalDuration = grabber.getLengthInFrames();
             System.out.println("Duration " + totalDuration);
 
-            final long startTimestamp = 0;
-            final long endTimestamp = duree;
+            long nbFrames = grabber.getLengthInFrames();
+            long duree = nbFrames/4;
+            try (FFmpegFrameRecorder recorder = new FFmpegFrameRecorder("output/javaCVDecoupe.mp4", grabber.getImageWidth(), grabber.getImageHeight())){
+                recorder.setVideoCodec(avcodec.AV_CODEC_ID_H264);
+                recorder.setFormat(grabber.getFormat());
+                recorder.setFrameRate(grabber.getFrameRate());
+                recorder.setVideoBitrate(grabber.getVideoBitrate());
 
-            // grabber.setTimestamp(startTimestamp);
-
-            // Configure le recorder
-            // Partie VIDEO
-            recorder.setVideoCodec(avcodec.AV_CODEC_ID_H264);
-            recorder.setFormat("mp4");
-            recorder.setFrameRate(grabber.getFrameRate());
-            recorder.setVideoBitrate(grabber.getVideoBitrate());
-            recorder.setPixelFormat(avutil.AV_PIX_FMT_YUV420P);
-
-            // Partie Audio
-            System.out.println(grabber.getAudioChannels());
-            recorder.setAudioChannels(grabber.getAudioChannels());
-            recorder.setAudioCodec(avcodec.AV_CODEC_ID_AAC);
-            recorder.setSampleRate(grabber.getSampleRate());
-            recorder.setAudioBitrate(grabber.getAudioBitrate());
-
-            recorder.start();
+                // Set audio settings if the input video has audio
+                if (grabber.getAudioChannels() > 0) {
+                    recorder.setAudioChannels(grabber.getAudioChannels());
+                    recorder.setAudioCodec(avcodec.AV_CODEC_ID_AAC);
+                    recorder.setSampleRate(grabber.getSampleRate());
+                    recorder.setAudioBitrate(grabber.getAudioBitrate());
+                }
+                System.out.println(recorder.getImageHeight());
+                System.out.println(recorder.getImageWidth());
+                // Start the recorder and ensure it started successfully
+                recorder.start();
 
 
-            for (int i = 0; i < duree; i++) {
-                Frame frame = grabber.grabFrame();
-                if (frame == null) break;
-                recorder.record(frame);
+                for (int i = 0; i < duree; i++) {
+                    Frame frame = grabber.grabFrame();
+                    if (frame == null) break;
+                    recorder.record(frame);
+                }
+
+
+                recorder.stop();
             }
-
-
-            recorder.stop();
+            catch (Exception e) {
+                e.printStackTrace();
+            }
             grabber.stop();
         } catch (Exception e) {
             e.printStackTrace();

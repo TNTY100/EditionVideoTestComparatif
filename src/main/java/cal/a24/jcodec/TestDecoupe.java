@@ -1,8 +1,11 @@
 package cal.a24.jcodec;
 
+import org.bytedeco.libfreenect._freenect_context;
 import org.jcodec.api.FrameGrab;
 import org.jcodec.api.JCodecException;
 import org.jcodec.api.SequenceEncoder;
+import org.jcodec.common.Codec;
+import org.jcodec.common.Format;
 import org.jcodec.common.io.NIOUtils;
 import org.jcodec.common.io.SeekableByteChannel;
 import org.jcodec.common.model.ColorSpace;
@@ -31,22 +34,12 @@ public class TestDecoupe {
             double fps = frameGrab.getVideoTrack().getMeta().getTotalDuration() / frameGrab.getVideoTrack().getMeta().getTotalFrames();
             int totalFrames = 30;
             System.out.println(totalFrames);
-            SequenceEncoder encoder = SequenceEncoder.createWithFps(outputChannel, Rational.R((int)fps, 1));
+            SequenceEncoder encoder = new SequenceEncoder(outputChannel, Rational.R1(30), Format.H264, Codec.H264, Codec.AAC); //SequenceEncoder.createWithFps(outputChannel, Rational.R(30, 1));
+
             for (int i = 0; i < totalFrames; i++) {
-                Picture yuvPic = frameGrab.getNativeFrame();
-                System.out.println(yuvPic.getColor());
+                Picture picture = frameGrab.getNativeFrame();
 
-                Picture picture = Picture.create(yuvPic.getWidth(), yuvPic.getHeight(), ColorSpace.RGB);
-                new Yuv420pToRgb().transform(yuvPic, picture);
-
-                ColorSpace color = picture.getColor();
-
-                if (!color.matches(ColorSpace.RGB)) {
-                    System.out.println("No color" + color);
-                }
-                else {
-                    encoder.encodeNativeFrame(picture);
-                }
+                encoder.encodeNativeFrame(picture);
             }
             encoder.finish();
         }
