@@ -52,13 +52,6 @@
             <version>4.9.0-1.5.10</version>
         </dependency>
 
-        <!-- Optional GPL builds with (almost) everything enabled
-        <dependency>
-            <groupId>org.bytedeco</groupId>
-            <artifactId>ffmpeg-platform-gpl</artifactId>
-            <version>6.1.1-1.5.10</version>
-        </dependency>-->
-
         <!-- https://mvnrepository.com/artifact/org.jcodec/jcodec -->
         <dependency>
             <groupId>org.jcodec</groupId>
@@ -77,11 +70,23 @@
             <version>0.2.5</version>
         </dependency>
 
+        <dependency>
+            <groupId>net.bramp.ffmpeg</groupId>
+            <artifactId>ffmpeg</artifactId>
+            <version>0.8.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>2.0.13</version>
+        </dependency>
+
 
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx</artifactId>
-            <version>23</version>
+            <version>23.0.1</version>
             <type>pom</type>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.openjfx/javafx -->
@@ -89,6 +94,17 @@
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
             <version>23.0.1</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-media -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-media</artifactId>
+            <version>23.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.34</version>
         </dependency>
     </dependencies>
 
