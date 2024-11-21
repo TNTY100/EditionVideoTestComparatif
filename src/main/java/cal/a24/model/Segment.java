@@ -3,6 +3,8 @@ package cal.a24.model;
 import javafx.scene.image.Image;
 import lombok.Data;
 import org.bytedeco.javacv.FFmpegFrameGrabber;
+import org.bytedeco.javacv.Frame;
+import org.bytedeco.javacv.FrameGrabber;
 import org.bytedeco.javacv.JavaFXFrameConverter;
 
 import java.io.Closeable;
@@ -23,8 +25,17 @@ public class Segment implements Closeable {
         grabber.start();
 
         timestampDebut = 0;
+        grabber.setVideoTimestamp(timestampDebut);
         timestampFin = grabber.getLengthInTime();
-        System.out.println(timestampFin);
+    }
+
+    public Segment(String fichier, long debut, long fin) throws FFmpegFrameGrabber.Exception {
+        grabber = new FFmpegFrameGrabber(fichier);
+        grabber.start();
+
+        timestampDebut = debut;
+        timestampFin = fin;
+        grabber.setVideoTimestamp(timestampDebut);
     }
 
 
@@ -42,6 +53,18 @@ public class Segment implements Closeable {
         grabber.setVideoTimestamp(timestamp);
 
         return converter.convert(grabber.grabImage());
+    }
+
+    public Frame startGrab() throws FrameGrabber.Exception {
+        grabber.setVideoTimestamp(timestampDebut);
+        return grab();
+    }
+
+    public Frame grab() throws FrameGrabber.Exception {
+        if (grabber.getTimestamp() > timestampFin) {
+            return null;
+        }
+        return grabber.grabFrame();
     }
 
     @Override
