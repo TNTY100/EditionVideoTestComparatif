@@ -1,6 +1,5 @@
 package cal.a24.jcodec;
 
-import org.bytedeco.libfreenect._freenect_context;
 import org.jcodec.api.FrameGrab;
 import org.jcodec.api.JCodecException;
 import org.jcodec.api.SequenceEncoder;
@@ -8,17 +7,13 @@ import org.jcodec.common.Codec;
 import org.jcodec.common.Format;
 import org.jcodec.common.io.NIOUtils;
 import org.jcodec.common.io.SeekableByteChannel;
-import org.jcodec.common.model.ColorSpace;
 import org.jcodec.common.model.Picture;
 import org.jcodec.common.model.Rational;
-import org.jcodec.scale.Yuv420jToRgb;
-import org.jcodec.scale.Yuv420pToRgb;
-import org.jcodec.scale.highbd.Yuv420jToRgbHiBD;
 
 import java.io.File;
 import java.io.IOException;
 
-public class TestDecoupe {
+public class JCodecDecoupe {
     public static void main(String[] args) throws IOException, JCodecException {
         File file = new File("./src/main/resources/videos/12SecondesLondon.mp4");
         File output = new File("./output/jcodecDecoupe.mp4");
