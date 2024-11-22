@@ -20,9 +20,6 @@ public class FFmpegImagePicker {
         FFprobe probe = new FFprobe();
 
         FFmpegProbeResult probeResult = probe.probe(inputFile1);
-        FFmpegStream fFmpegStream1 = probeResult.getStreams().stream()
-                .filter(fFmpegStream -> fFmpegStream.codec_type == FFmpegStream.CodecType.VIDEO)
-                .findFirst().orElseThrow();
 
 
         FFmpegBuilder builder = ffmpeg.builder()
