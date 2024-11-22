@@ -19,6 +19,7 @@ public class Segment implements Closeable {
 
     private long timestampDebut;
     private long timestampFin;
+    private long lastGrab;
 
     public Segment(String fichier) throws FFmpegFrameGrabber.Exception {
         grabber = new FFmpegFrameGrabber(fichier);
@@ -55,9 +56,9 @@ public class Segment implements Closeable {
         return converter.convert(grabber.grabImage());
     }
 
-    public Frame startGrab() throws FrameGrabber.Exception {
+    public void startGrab() throws FrameGrabber.Exception {
+        grabber.setAudioTimestamp(timestampDebut);
         grabber.setVideoTimestamp(timestampDebut);
-        return grab();
     }
 
     public Frame grab() throws FrameGrabber.Exception {

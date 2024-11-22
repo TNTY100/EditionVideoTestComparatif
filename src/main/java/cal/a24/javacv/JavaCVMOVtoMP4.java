@@ -3,12 +3,10 @@ package cal.a24.javacv;
 import org.bytedeco.ffmpeg.global.avcodec;
 import org.bytedeco.javacv.*;
 
-public class JavaCVMP4toMOV {
-
+public class JavaCVMOVtoMP4 {
     public static void main(String[] args) throws FrameGrabber.Exception, FrameRecorder.Exception {
-
-        String inputFile = "./src/main/resources/videos/48SecondesAvecSon.mp4";
-        String outputFile = "./output/javacvmov.mov";
+        String inputFile = "./src/main/resources/videos/48SecondesAvecSon.mov";
+        String outputFile = "./output/javacvmp4.mp4";
 
         FFmpegFrameGrabber frameGrabber = new FFmpegFrameGrabber(inputFile);
         frameGrabber.start();
@@ -19,7 +17,7 @@ public class JavaCVMP4toMOV {
                 frameGrabber.getAudioChannels());
 
         frameRecorder.setVideoCodec(avcodec.AV_CODEC_ID_H264); // or use grabber.getVideoCodec()
-        frameRecorder.setFormat("mov");
+        frameRecorder.setFormat("mp4");
         frameRecorder.setFrameRate(frameGrabber.getFrameRate());
         frameRecorder.setVideoBitrate(frameGrabber.getVideoBitrate());
 

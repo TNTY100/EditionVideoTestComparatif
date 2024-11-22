@@ -3,10 +3,7 @@ package cal.a24.model;
 import javafx.scene.image.Image;
 import lombok.Data;
 import org.bytedeco.ffmpeg.global.avcodec;
-import org.bytedeco.javacv.FFmpegFrameRecorder;
-import org.bytedeco.javacv.Frame;
-import org.bytedeco.javacv.FrameGrabber;
-import org.bytedeco.javacv.FrameRecorder;
+import org.bytedeco.javacv.*;
 
 import java.util.List;
 
@@ -44,22 +41,22 @@ public class Montage {
     }
 
     public void export(String fileName) {
-        try (FFmpegFrameRecorder recorder = new FFmpegFrameRecorder(fileName, 3840, 2160)) {
-            recorder.setVideoCodec(avcodec.AV_CODEC_ID_H264); // or use grabber.getVideoCodec()
+        try (FFmpegFrameRecorder recorder = new FFmpegFrameRecorder(fileName, 1920, 1080)) {
+            recorder.setVideoCodec(avcodec.AV_CODEC_ID_H264);
             recorder.setFormat("mov,mp4,m4a,3gp,3g2,mj2");
-            recorder.setFrameRate(60);
-            recorder.setVideoBitrate(1184091);
+            recorder.setFrameRate(30);
+            recorder.setVideoBitrate(3_500_000);
 
             // Set audio settings if the input video has audio
             recorder.setAudioChannels(2);
             recorder.setAudioCodec(avcodec.AV_CODEC_ID_AAC);  // AAC is commonly used
             recorder.setSampleRate(48000);
-            recorder.setAudioBitrate(326757);
+            recorder.setAudioBitrate(326_757);
 
             recorder.start();
 
             for (Segment segment : segments) {
-                recorder.record(segment.startGrab());
+                segment.startGrab();
                 Frame frame;
                 while ((frame = segment.grab()) != null) {
                     recorder.record(frame);
@@ -70,6 +67,8 @@ public class Montage {
         } catch (FrameRecorder.Exception e) {
             throw new RuntimeException(e);
         } catch (FrameGrabber.Exception e) {
+            throw new RuntimeException(e);
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
