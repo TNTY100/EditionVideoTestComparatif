@@ -4,7 +4,7 @@ import org.bytedeco.ffmpeg.global.avcodec;
 import org.bytedeco.ffmpeg.global.avutil;
 import org.bytedeco.javacv.*;
 
-public class JavaCVConvert60to30 {
+public class JavaCVConvert60FpsTo30 {
     public static void main(String[] args) {
 
         String inputFile = "./src/main/resources/videos/bbb_sunflower_2160p_60fps_normal.mp4";
@@ -43,7 +43,7 @@ public class JavaCVConvert60to30 {
 
             Frame capturedFrame;
             Frame pullFrame;
-            while (true && recorder.getTimestamp() < 10_000_000) {
+            while (recorder.getTimestamp() < 10_000_000) {
                 try {
                     capturedFrame = grabber.grab();
                     if (capturedFrame == null) {

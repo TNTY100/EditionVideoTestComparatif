@@ -2,7 +2,6 @@ package cal.a24.javacv;
 
 import org.bytedeco.ffmpeg.global.avcodec;
 import org.bytedeco.javacv.*;
-import org.bytedeco.opencv.opencv_videostab.NullLog;
 
 public class JavaCVConcat {
     public static void main(String[] args) {

@@ -24,6 +24,7 @@ public class JavaCVJavaFX extends Application {
     @Override
     public void start(Stage stage) throws URISyntaxException, FFmpegFrameGrabber.Exception {
         AtomicReference<Boolean> isPlay = new AtomicReference<>(false);
+        AtomicReference<Boolean> isAppOn = new AtomicReference<>(true);
 
         Group root = new Group();
         Scene scene = new Scene(root, 600, 600);
@@ -43,15 +44,23 @@ public class JavaCVJavaFX extends Application {
             while (currentTime < montage.getDureeTotale()) {
                 imageView.setImage(montage.getImageFXAtTimeStamp(currentTime = currentTime + 100000));
 
+                if (!isAppOn.get()) {
+                    break;
+                }
+
                 while (!isPlay.get()) {
                     try {
                         Thread.sleep(1);
+                        if (!isAppOn.get()) {
+                            break;
+                        }
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
                 }
-            };
+            }
 
+            System.out.println("End of program");
             segments.forEach((segment -> {
                 try {
                     segment.close();
@@ -74,16 +83,6 @@ public class JavaCVJavaFX extends Application {
             buttonPause.setText(isPlay.get() ? "Pause" : "Play");
         });
 
-
-        Button goToBtn = new Button("Go to 10 second");
-
-        /*
-        goToBtn.setOnAction((_) -> {
-            mdPlayer.currentTimeProperty();
-        });
-
-         */
-
          HBox buttonsBox = new HBox();
          buttonsBox.setAlignment(Pos.CENTER);
          buttonsBox.setStyle("-fx-border-color: grey; -fx-border-width: 2px");
@@ -97,6 +96,7 @@ public class JavaCVJavaFX extends Application {
         stage.setScene(scene);
         stage.setTitle("Sample Application");
         stage.show();
+        stage.setOnCloseRequest(_ -> isAppOn.set(false));
     }
 
     public static void main(String[] args) {

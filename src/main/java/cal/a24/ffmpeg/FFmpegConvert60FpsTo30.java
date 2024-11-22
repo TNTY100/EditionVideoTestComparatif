@@ -5,9 +5,8 @@ import net.bramp.ffmpeg.FFmpegExecutor;
 import net.bramp.ffmpeg.builder.FFmpegBuilder;
 
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
-public class FFmpegConvert60fpsTo30 {
+public class FFmpegConvert60FpsTo30 {
     public static void main(String[] args) throws IOException {
         String inputFile = "./src/main/resources/videos/bbb_sunflower_2160p_60fps_normal.mp4";
         String outputFile = "./output/ffmpeg_60to30.mp4";
@@ -16,9 +15,8 @@ public class FFmpegConvert60fpsTo30 {
         FFmpeg ffmpeg = new FFmpeg();
         FFmpegBuilder builder = ffmpeg.builder()
                 .addInput(inputFile)
-                .setStartOffset(10, TimeUnit.SECONDS)
                 .addExtraArgs("-t", "10")
-                .setVideoFilter("fps=fps=30")
+                .setComplexFilter("fps=fps=30")
                 .addOutput(outputFile)
                 .done();
 
