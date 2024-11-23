@@ -40,18 +40,18 @@ public class Montage {
             return segments.stream().mapToLong(Segment::getDuree).sum();
     }
 
-    public void export(String fileName) {
-        try (FFmpegFrameRecorder recorder = new FFmpegFrameRecorder(fileName, 1920, 1080)) {
+    public void export(String fileName, int width, int height, int videoBitrate, int sampleRate, int audioRate) {
+        try (FFmpegFrameRecorder recorder = new FFmpegFrameRecorder(fileName, width, height)) {
             recorder.setVideoCodec(avcodec.AV_CODEC_ID_H264);
             recorder.setFormat("mov,mp4,m4a,3gp,3g2,mj2");
             recorder.setFrameRate(30);
-            recorder.setVideoBitrate(3_500_000);
+            recorder.setVideoBitrate(videoBitrate);
 
             // Set audio settings if the input video has audio
             recorder.setAudioChannels(2);
             recorder.setAudioCodec(avcodec.AV_CODEC_ID_AAC);  // AAC is commonly used
-            recorder.setSampleRate(48000);
-            recorder.setAudioBitrate(326_757);
+            recorder.setSampleRate(sampleRate);
+            recorder.setAudioBitrate(audioRate);
 
             recorder.start();
 

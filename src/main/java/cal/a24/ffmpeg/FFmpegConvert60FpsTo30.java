@@ -16,7 +16,8 @@ public class FFmpegConvert60FpsTo30 {
         FFmpegBuilder builder = ffmpeg.builder()
                 .addInput(inputFile)
                 .addExtraArgs("-t", "10")
-                .setComplexFilter("fps=fps=30")
+                .setComplexFilter("fps=30")
+                .setAudioFilter("volume=5")
                 .addOutput(outputFile)
                 .done();
 

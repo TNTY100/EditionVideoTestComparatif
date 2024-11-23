@@ -11,7 +11,7 @@ import net.bramp.ffmpeg.probe.FFmpegStream;
 import java.io.IOException;
 import java.util.List;
 
-public class FfmpegConcat {
+public class FFmpegConcat {
     @SneakyThrows
     public static void main(String[] args) throws IOException, InterruptedException {
         String inputFile1 = "./src/main/resources/videos/48SecondesAvecSon.mp4";
