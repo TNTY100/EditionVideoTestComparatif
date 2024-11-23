@@ -23,7 +23,6 @@ public class Montage {
 
         for (Segment segment: segments) {
             if (timestamp < segment.getDuree()) {
-                System.out.println("Getting picture at " + timestamp);
                 try {
                     return segment.getImageFXAtTimestampInContent(timestamp);
                 }

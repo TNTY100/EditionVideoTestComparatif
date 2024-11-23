@@ -50,7 +50,6 @@ public class Segment implements Closeable {
             throw new RuntimeException("Le timestamp ne fait pas parti de l'intervalle voulue");
         }
 
-        System.out.println("Getting picture at in segement " + timestamp);
         grabber.setVideoTimestamp(timestamp);
 
         return converter.convert(grabber.grabImage());
